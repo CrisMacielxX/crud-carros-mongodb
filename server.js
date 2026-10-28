@@ -3,6 +3,7 @@ import dotenv from "dotenv"
 
 import connectDB from "./config/db.js"
 import userRoutes from "./routes/userRoutes.js"
+import carRoutes from "./routes/carRoutes.js"
 
 dotenv.config()
 
@@ -12,10 +13,11 @@ const PORT = 1998
 app.use(express.json())
 
 app.use("/users", userRoutes)
+app.use("/cars", carRoutes)
 
-const startServer = async() => {
-    try{
-        await connectDB () 
+const startServer = async () => {
+    try {
+        await connectDB()
 
         app.listen(PORT, () => {
             console.log("Servidor rodando na porta: ", PORT)
