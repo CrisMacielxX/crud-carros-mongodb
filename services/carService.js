@@ -40,7 +40,7 @@ const getCarById = async (id) => {
 }
 
 const getCarByPlate = async (placa) => {
-    const car = await Car.find({placa});
+    const car = await Car.find({ placa });
 
     if (!car) {
         const error = new Error("Carro não encontrado")
@@ -52,7 +52,7 @@ const getCarByPlate = async (placa) => {
 }
 
 const getCarByBrand = async (marca) => {
-    const car = await Car.find({marca});
+    const car = await Car.find({ marca });
 
     if (!car) {
         const error = new Error("Carro não encontrado")
@@ -67,6 +67,48 @@ const countAvailableCars = async () => {
     return Car.countDocuments()
 }
 
+const getAvailableCars = async () => {
+    return await Car.find({
+        disponivel: true
+    })
+}
+
+const getCarsByPriceRange = async (min, max) => {
+        return await Car.find({
+    preco: { $gte: Number (min), $lte: Number (max)  }
+
+    })
+}
+
+const updateCar = async (id, data) => {
+    const updateCar = await Car.findByIdAndUpdate(id, data,
+        { new: true, runValidators: true})
+
+        if(!updateCar) {
+            const error = new Error("Carro não encontrado para atualização")
+            error.statusCode = 404
+            throw error
+        }
+
+        return updateCar
+}
+
+const updateCarAvailability = async (id, disponivel) => {
+    const updateCar = await Car.findByIdAndUpdate(
+        id,
+        {disponivel},
+        {new: true, runValidators: true}
+    )
+
+    if(!updateCar) {
+        const error = new Error("Carro não encontrado")
+        error.statusCode = 404
+        throw error
+    }
+
+    return updateCar
+}
+
 
 export default {
     createCar,
@@ -76,4 +118,7 @@ export default {
     getCarByBrand,
     countAvailableCars,
     getAvailableCars,
+    getCarsByPriceRange,
+    updateCar,
+    updateCarAvailability,
 }

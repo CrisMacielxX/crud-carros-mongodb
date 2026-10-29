@@ -34,8 +34,23 @@ router.get(
 )
 
 router.get(
-    "/available",
+    "/available/disponivel",
     carController.getAvailableCars
+)
+
+router.get(
+    "/price/:min/:max",
+    carController.getCarsByPriceRange
+)
+
+router.put(
+    "/:id",
+    carController.updateCar
+)
+
+router.patch(
+    "/:id/availability",
+    carController.updateCarAvailability
 )
 
 export default router

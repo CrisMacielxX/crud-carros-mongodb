@@ -86,12 +86,62 @@ const getAvailableCars = async (req, res, next) => {
     try {
         const cars = await carService.getAvailableCars()
 
+        res.status(200).json({
+            message: "Carros disponiveis encontrado",
+            total: cars.length,
+            data: cars
+        })
+
     } catch (error) {
         next(error)
     }
 }
 
+const getCarsByPriceRange = async (req, res, next) => {
+    try {
+        const cars = await carService.getCarsByPriceRange(req.params.min, req.params.max)
 
+        res.status(200).json({
+            message: "Carros filtrados por esse valor",
+            data: cars
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+const updateCar = async (req, res, next) => {
+    try {
+        const carroAtualizado = await carService.updateCar(
+            req.params.id,
+            req.body
+        )
+
+        res.status(200).json({
+            message: "Carro encontrado",
+            data: carroAtualizado
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+const updateCarAvailability = async (req, res, next) => {
+    try {
+        const{disponivel} = req.body
+        const updateCar = await carService.updateCarAvailability ( req.params.id, disponivel)
+
+        res.status(200).json({
+            message: "Disponibilidade do carro atualizada com sucesso",
+            data: updateCar
+        })
+
+    } catch (error) {
+        next(error)
+    }
+}
 
 export default {
     createCar,
@@ -101,4 +151,7 @@ export default {
     getCarByBrand,
     countAvailableCars,
     getAvailableCars,
+    getCarsByPriceRange,
+    updateCar,
+    updateCarAvailability,
 }
